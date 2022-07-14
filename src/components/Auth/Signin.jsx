@@ -20,9 +20,10 @@ function Signin() {
    });
    const watchPassword = watch("password", '');
    const [isShowPassword, setIsShowPassword] = useState(false)
-   const onSubmit = data => {
-
-      console.log(data);
+   const onSubmit = async data => {
+      await auth.signInWithEmailAndPassword('tricdt@gmail.com', '123456').then(async user => {
+         console.log('User signed in ', await auth.currentUser.getIdToken());
+      })
    }
    const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
    const googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -35,14 +36,14 @@ function Signin() {
       }
 
    }
-   const handleOnClickLogin = (e) => {
-      e.preventDefault()
-      const sayHello = firebase.functions().httpsCallable('sayHello');
-      // call the function and pass data
-      sayHello({ name: 'Shaun' }).then(result => {
-         console.log(result.data);
-      });
-   }
+   // const handleOnClickLogin = (e) => {
+   //    e.preventDefault()
+   //    const sayHello = firebase.functions().httpsCallable('sayHello');
+   //    // call the function and pass data
+   //    sayHello({ name: 'Shaun' }).then(result => {
+   //       console.log(result.data);
+   //    });
+   // }
    return (
       <div className="limiter">
          <div className="container-login100" style={{
@@ -97,7 +98,6 @@ function Signin() {
                      <div className="wrap-login100-form-btn">
                         <div className="login100-form-bgbtn"></div>
                         <button className="login100-form-btn"
-                           onClick={(e) => handleOnClickLogin(e)}
                         >
                            Login
                         </button>

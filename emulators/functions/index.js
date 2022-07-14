@@ -1,8 +1,20 @@
+const initWebRoutes = require('./src/route/routes-config')
 const functions = require("firebase-functions");
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-   functions.logger.info("Hello logs!", { structuredData: true });
-   response.send("Hello from Firebase!");
-});
+const admin = require('firebase-admin')
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+admin.initializeApp()
+const app = express()
+// parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+app.use(cors({ origin: true }));
+// app.use(isAuthenticated)
+initWebRoutes(app);
+
+
+
+exports.api = functions.https.onRequest(app)
