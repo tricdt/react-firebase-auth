@@ -5,8 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import firebase, { auth } from './../../firebase/config'
 import './Signin.css'
+import { useAuth } from '../../context/AuthContext';
 function Signin() {
-
+   const { user, createUser, signIn, signOut } = useAuth()
+   const navigate = useNavigate();
    const validationSchema = Yup.object().shape({
       username: Yup.string().required('Username is required'),
       password: Yup.string()
@@ -21,9 +23,13 @@ function Signin() {
    const watchPassword = watch("password", '');
    const [isShowPassword, setIsShowPassword] = useState(false)
    const onSubmit = async data => {
-      await auth.signInWithEmailAndPassword('tricdt@gmail.com', '123456').then(async user => {
-         console.log('User signed in ', await auth.currentUser.getIdToken());
-      })
+      await signIn(data.username, data.password)
+      // if (role === 'manager') {
+      //    navigate('/manager')
+      // }
+      // if (role === 'user') {
+      //    navigate('/user')
+      // }
    }
    const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
    const googleProvider = new firebase.auth.GoogleAuthProvider();
